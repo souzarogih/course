@@ -12,3 +12,7 @@ All notable changes to this project will be documented in this file. This change
 ## [1.0.2] 2023-06-28
 ### Added
 - #1203 | Implementar a deleção em cascata de um usuário e seus cursos
+
+## [1.0.3] 2023-06-29
+### Added
+- #1205 | Adicionando configurações de registro no Eureka service register
