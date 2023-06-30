@@ -16,3 +16,7 @@ All notable changes to this project will be documented in this file. This change
 ## [1.0.3] 2023-06-29
 ### Added
 - #1205 | Adicionando configurações de registro no Eureka service register
+
+## [1.0.4] 2023-06-29
+### Added
+- #1207 | Adicionando predicate para receber requisições da api-gateway
