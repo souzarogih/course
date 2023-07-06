@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.List;
 import java.util.UUID;
@@ -43,15 +44,18 @@ public class AuthUserClient {
             };
             result = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
             searchResult = result.getBody().getContent();
+            log.debug("#result - {}", result);
             log.debug("Response Number of Elements: {} ", searchResult.size());
         } catch (HttpStatusCodeException e) {
             log.error("Error request /users {} ", e);
         }
         log.info("Ending request /users courseId {} ", courseId);
         return result.getBody();
+//        return new PageImpl<>(searchResult);
     }
 
     public ResponseEntity<UserDto> getOneUserById(UUID userId){
+        log.info("Buscando pelo usuário {} no serviço de userauth {}",userId , REQUEST_URL_AUTHUSER);
         String url = REQUEST_URL_AUTHUSER + "/users/" + userId;
         return restTemplate.exchange(url, HttpMethod.GET, null, UserDto.class);
     }
@@ -63,5 +67,12 @@ public class AuthUserClient {
         courseUserDto.setUserId(userId);
         courseUserDto.setCourseId(courseId);
         restTemplate.postForObject(url, courseUserDto, String.class);
+    }
+
+    public void deleteCourseInAuthUser(UUID courseId) {
+        log.info("Enviando requisição para deleção de curso no AuthUser com CourseId {} em {}.", courseId, REQUEST_URL_AUTHUSER);
+        String url = REQUEST_URL_AUTHUSER + "/users/courses/" + courseId;
+        restTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
+
     }
 }

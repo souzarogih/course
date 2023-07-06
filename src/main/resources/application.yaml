@@ -23,7 +23,7 @@ spring:
 ead:
   api:
     url:
-      authuser: 'http://ead-userauth-service'
+      authuser: 'http://ead-userauth-service/ead-userauth'
 
 eureka:
   client:

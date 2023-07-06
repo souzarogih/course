@@ -4,6 +4,7 @@ import com.ead.course.clients.AuthUserClient;
 import com.ead.course.dtos.CourseDto;
 import com.ead.course.dtos.UserDto;
 import com.ead.course.enums.UserType;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 
 import java.util.UUID;
 
+@Log4j2
 @Component
 public class CourseValidator implements Validator {
 
@@ -43,11 +45,14 @@ public class CourseValidator implements Validator {
         ResponseEntity<UserDto> responseUserInstructor;
         try {
             responseUserInstructor = authUserClient.getOneUserById(userInstructor);
+            log.info("Retorno da requisição: {}", responseUserInstructor);
             if(responseUserInstructor.getBody().getUserType().equals(UserType.STUDENT)){
+                log.info("Erro na validação do userInstructor: {} ", userInstructor);
                 errors.rejectValue("userInstructor", "UserInstructorError", "User must be INSTRUCTOR or ADMIN.");
             }
         } catch (HttpStatusCodeException e) {
             if(e.getStatusCode().equals(HttpStatus.NOT_FOUND)){
+                log.error("course - Erro na validação do usuário instrutor.");
                 errors.rejectValue("userInstructor", "UserInstructorError", "Instructor not found.");
             }
         }
