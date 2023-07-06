@@ -83,4 +83,14 @@ public class CourseUserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(courseUserModel);
     }
 
+    @DeleteMapping("/courses/users/{userId}")
+    public ResponseEntity<Object> deleteCourseUserByUser(@PathVariable(value = "userId") UUID userId){
+        if(!courseUserService.existsByUserId(userId)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("CourserUser not found.");
+        }
+        courseUserService.deleteCourseUserByUser(userId);
+        log.info("CouserUser {} deleted successfully.", userId);
+        return ResponseEntity.status(HttpStatus.OK).body("CouserUser deleted successfully.");
+    }
+
 }
